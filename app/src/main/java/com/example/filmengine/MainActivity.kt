@@ -2,31 +2,35 @@ package com.example.filmengine
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.ui.Modifier
+import com.example.filmengine.ui.theme.FilmEngineTheme
+
+
 import dagger.hilt.android.AndroidEntryPoint
 
 // Bu annotation, Hilt'e bu Activity'de dependency kullanabileceğimizi söyler.
 // Yani ileride ViewModel Repository gibi yapıları Hilt üzerinden kolayca kullanabilmek için eklenir.
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Uygulamanın ekranın tamamını kullanmasını sağlar.
         enableEdgeToEdge()
 
-        setContentView(R.layout.activity_main)
+        setContent {  //compose için değişti
+            FilmEngineTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
 
-        // Ekran tam kullanıldığı için bazı içerikler üstteki veya alttaki sistem çubuklarının altında kalabilir.
-        // Bu kod, sistem çubuklarının kapladığı alanı hesaplayıp ekrana uygun boşluk ekliyor
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+                }
+            }
         }
     }
 

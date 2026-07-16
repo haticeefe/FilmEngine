@@ -10,90 +10,152 @@ plugins {
 
 android {
     namespace = "com.example.filmengine"
+
     compileSdk {
         version = release(36)
     }
 
-    defaultConfig {  //temel ayarlar
+    defaultConfig {
+
         applicationId = "com.example.filmengine"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
+        // API anahtarını local.properties dosyasından alır.
+        // Böylece hassas bilgiler direkt kod içinde tutulmaz.
         val localProperties = Properties()
         val localPropertiesFile = rootProject.file("local.properties")
+
         if (localPropertiesFile.exists()) {
             localProperties.load(FileInputStream(localPropertiesFile))
         }
-        buildConfigField("String", "TMDB_API_KEY", "\"${localProperties.getProperty("TMDB_API_KEY")}\"")
-        buildConfigField("String", "TMDB_BASE_URL", "\"https://api.themoviedb.org/3/\"")
-        buildConfigField("String", "TMDB_IMAGE_BASE_URL", "\"https://image.tmdb.org/t/p/w500\"")
+
+
+        // API bağlantısı için gerekli bilgileri uygulamaya aktarır.
+        buildConfigField(
+            "String",
+            "TMDB_API_KEY",
+            "\"${localProperties.getProperty("TMDB_API_KEY")}\""
+        )
+
+        buildConfigField(
+            "String",
+            "TMDB_BASE_URL",
+            "\"https://api.themoviedb.org/3/\""
+        )
+
+        // Film görsellerinin temel adresi.
+        buildConfigField(
+            "String",
+            "TMDB_IMAGE_BASE_URL",
+            "\"https://image.tmdb.org/t/p/w500\""
+        )
     }
 
-    buildTypes {  //geliştirme ve yayın sürümleri
+
+    // Uygulamanın yayınlama ayarları.
+    buildTypes {
         release {
             isMinifyEnabled = false
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
     }
+
+
+    // Java ve Kotlin sürüm ayarları.
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
     kotlinOptions {
         jvmTarget = "11"
     }
+
+
+    // Jetpack Compose kullanımını aktif eder.
     buildFeatures {
-        viewBinding = true  //ViewBinding aktif //findViewById kullanmadan view'lara erişebiliyoruz.
+        compose = true   //burayı değiştrdim compose için
+
+        // BuildConfig sınıfının oluşturulmasını sağlar.
         buildConfig = true
     }
 }
 
+
 dependencies {
+
+    // Temel Android kütüphaneleri
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
-    implementation(libs.androidx.activity)
-    implementation(libs.androidx.constraintlayout)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
 
-    // Lifecycle & ViewModel
-    implementation(libs.androidx.lifecycle.viewmodel.ktx) //ViewModel kullanabilmek için
+
+    // ViewModel ve Lifecycle yönetimi için kullanılır.
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
 
-    // Navigation
+
+    // Ekranlar arası geçiş işlemleri için kullanılır.
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
 
-    // Retrofit
+
+    // API bağlantısı için Retrofit kullanılır.
     implementation(libs.retrofit)
     implementation(libs.retrofit.gson)
     implementation(libs.okhttp.logging)
 
-    // Paging
+
+    // Büyük listeleri sayfalı şekilde yüklemek için kullanılır.
     implementation(libs.androidx.paging.runtime.ktx)
 
-    // Room
+
+    // Yerel veritabanı işlemleri için Room kullanılır.
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.room.paging)
     ksp(libs.androidx.room.compiler)
 
-    // Coroutines  //--Arka planda işlemleri çalıştırmak için
+
+    // Asenkron işlemleri yönetmek için kullanılır.
     implementation(libs.kotlinx.coroutines.android)
 
-    // Görsel
+
+    // İnternetten görsel yüklemek için kullanılır.
     implementation(libs.coil)
 
-    // Hilt
+
+    // Dependency Injection işlemleri için Hilt kullanılır.
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
+
+
+
+    // Compose kütüphanelerinin uyumlu versiyonlarını yönetir.
+    implementation(platform(libs.androidx.compose.bom))
+
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
+
+
+    // Compose ekranlarını Activity içinde göstermek için kullanılır.
+    implementation(libs.androidx.activity.compose)
+    // Compose ekranları arasında geçiş yapmak için kullanılır.
+    implementation(libs.androidx.navigation.compose)
+    // Paging3 ile Compose listelerini kullanmayı sağlar.
+    implementation(libs.androidx.paging.compose)
+    // Compose içinde ViewModel kullanımını sağlar.
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    // Compose içinde internetten resim göstermek için kullanılır.
+    implementation(libs.coil.compose)
 }

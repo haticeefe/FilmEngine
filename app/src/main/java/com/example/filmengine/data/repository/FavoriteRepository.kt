@@ -33,3 +33,5 @@ class FavoriteRepository @Inject constructor(
         return dao.getFavoriteById(movieId) != null
     }
 }
+
+//Telefon içindeki veritabanından gelir veri room ile çalışır
