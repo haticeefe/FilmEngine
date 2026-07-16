@@ -8,6 +8,7 @@ import com.example.filmengine.data.remote.TmdbApiService
 import com.example.filmengine.data.remote.dto.MovieDto
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
+import com.example.filmengine.data.remote.dto.MovieDetailDto
 
 
 // Bu sınıf popüler filmlerle ilgili veri işlemlerini yönetir.
@@ -17,6 +18,10 @@ class PopularMoviesRepository @Inject constructor(
 ) {
 
     // Popüler filmleri sayfalı şekilde almak için kullanılır.
+
+    suspend fun getMovieDetail(movieId: Int): MovieDetailDto {
+        return api.getMovieDetail(movieId)
+    }
     fun getPopularMovies(): Flow<PagingData<MovieDto>> {
 
         return Pager(

@@ -2,10 +2,8 @@ package com.example.filmengine.ui.popular
 
 
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -14,6 +12,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
+import com.example.filmengine.BuildConfig
+import com.example.filmengine.ui.common.MovieCard
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
+
 
 
 // Popüler filmler ekranını oluşturan Compose fonksiyonu.
@@ -32,7 +36,8 @@ fun PopularScreen(
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = androidx.compose.foundation.layout.PaddingValues(16.dp)
+        contentPadding = PaddingValues(16.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
 
         // Filmleri liste halinde ekrana ekler.
@@ -43,19 +48,14 @@ fun PopularScreen(
         ) { index ->
 
             val movie = movies[index]
-
             if (movie != null) {
-
-                // Şimdilik filmin adı ve puanı gösteriliyor.
-                // Daha sonra buraya film kartı eklenecek.
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(8.dp)
-                ) {
-                    Text(text = movie.title)
-                    Text(text = "⭐ ${movie.vote_average}")
-                }
+                MovieCard(
+                    title = movie.title,
+                    posterUrl = movie.poster_path?.let { "${BuildConfig.TMDB_IMAGE_BASE_URL}$it" },
+                    rating = movie.vote_average,
+                    onClick = { onMovieClick(movie.id) },
+                    modifier = Modifier.padding(vertical = 6.dp)
+                )
             }
         }
     }
