@@ -11,16 +11,14 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
-// @Module: Bu sınıfın Hilt'e "nesne nasıl oluşturulur" bilgisi sağladığını belirtir.
-// @InstallIn(SingletonComponent::class): Buradaki nesnelerin uygulama boyunca (Application yaşam
-// döngüsü boyunca) TEK bir örneğinin olacağını, yani Singleton davranacağını söyler.
+// Bu sınıf, ağ (network) işlemleri için gerekli nesneleri oluşturur.
+// Oluşturulan nesneler uygulama boyunca tek bir kez kullanılır.
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
-    // Bu fonksiyon çağrıldığında (biri OkHttpClient isteyince), loglama özelliği eklenmiş
-    // bir OkHttpClient döndürür. @Singleton, bu nesnenin sadece bir kez oluşturulup
-    // tekrar tekrar aynısının kullanılacağını garanti eder.
+    // OkHttpClient oluşturuyor.
+    // API isteklerini Logcat'te görebilmek için loglama ekleniyor.
     @Provides
     @Singleton
     fun provideOkHttpClient(): OkHttpClient {
@@ -32,9 +30,8 @@ object NetworkModule {
             .build()
     }
 
-    // Biri Retrofit isteyince, bu fonksiyon devreye girer. Dikkat: parametre olarak
-    // OkHttpClient alıyor -- Hilt, yukarıdaki provideOkHttpClient() fonksiyonunu otomatik
-    // çağırıp buraya "enjekte ediyor". Biz elle bağlamıyoruz, Hilt kendisi eşleştiriyor.
+    // Retrofit nesnesini oluşturuyor.
+    // OkHttpClient kullanılarak API bağlantısı hazırlanıyor.
     @Provides
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
@@ -45,8 +42,8 @@ object NetworkModule {
             .build()
     }
 
-    // Biri TmdbApiService isteyince bu fonksiyon Retrofit
-    // nesnesinden gerçek API servisini üretip verir.
+    // TmdbApiService oluşturuyor.
+    // Böylece API isteklerini yapabiliyoruz.
     @Provides
     @Singleton
     fun provideTmdbApiService(retrofit: Retrofit): TmdbApiService {

@@ -14,7 +14,7 @@ android {
         version = release(36)
     }
 
-    defaultConfig {
+    defaultConfig {  //temel ayarlar
         applicationId = "com.example.filmengine"
         minSdk = 24
         targetSdk = 36
@@ -33,7 +33,7 @@ android {
         buildConfigField("String", "TMDB_IMAGE_BASE_URL", "\"https://image.tmdb.org/t/p/w500\"")
     }
 
-    buildTypes {
+    buildTypes {  //geliştirme ve yayın sürümleri
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -50,7 +50,7 @@ android {
         jvmTarget = "11"
     }
     buildFeatures {
-        viewBinding = true
+        viewBinding = true  //ViewBinding aktif //findViewById kullanmadan view'lara erişebiliyoruz.
         buildConfig = true
     }
 }
@@ -66,7 +66,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     // Lifecycle & ViewModel
-    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx) //ViewModel kullanabilmek için
     implementation(libs.androidx.lifecycle.runtime.ktx)
 
     // Navigation
@@ -87,7 +87,7 @@ dependencies {
     implementation(libs.androidx.room.paging)
     ksp(libs.androidx.room.compiler)
 
-    // Coroutines
+    // Coroutines  //--Arka planda işlemleri çalıştırmak için
     implementation(libs.kotlinx.coroutines.android)
 
     // Görsel

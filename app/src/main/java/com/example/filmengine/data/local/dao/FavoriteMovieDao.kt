@@ -36,3 +36,4 @@ interface FavoriteMovieDao {
 //suspend fun:Veritabanına film ekleyen ve
 // coroutine içinde çalışması gereken bir fonksiyon.
 
+//kısaca  veritabanı üzerinde CRUD

@@ -16,3 +16,8 @@ data class GenreDto(
     val id: Int,
     val name: String
 )
+
+
+
+//Bu dosya, API'den gelen film detaylarını ve film türlerini Kotlin nesnelerine dönüştürmek
+// için kullanılan DTO sınıflarını içeriyor.
