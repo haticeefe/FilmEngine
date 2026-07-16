@@ -6,6 +6,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.material3.Button
+
 
 // Popüler filmler ekranını oluşturan Compose fonksiyonu.
 // Bir filme tıklandığında yapılacak işlem dışarıdan gönderilir.
@@ -18,7 +20,10 @@ fun PopularScreen(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Text("Popular Movies Screen")
+        //deneme butonu çalışıyor mu diye
+        Button(onClick = { onMovieClick(550) }) {
+            Text("Popular Movies Screen (fake movie'ye git: 550)")
+        }
     }
 }
 

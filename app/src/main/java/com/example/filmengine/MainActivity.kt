@@ -9,6 +9,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.example.filmengine.ui.theme.FilmEngineTheme
+import com.example.filmengine.ui.navigation.NavGraph
+
 
 
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,6 +30,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    NavGraph()
 
                 }
             }
