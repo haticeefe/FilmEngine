@@ -9,6 +9,8 @@ import com.example.filmengine.data.remote.dto.MovieDto
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import com.example.filmengine.data.remote.dto.MovieDetailDto
+import com.example.filmengine.data.remote.dto.CastMemberDto;
+
 
 
 // Bu sınıf popüler filmlerle ilgili veri işlemlerini yönetir.
@@ -21,6 +23,15 @@ class PopularMoviesRepository @Inject constructor(
 
     suspend fun getMovieDetail(movieId: Int): MovieDetailDto {
         return api.getMovieDetail(movieId)
+    }
+    //oyuncu kadrosu
+    suspend fun getMovieCredits(movieId: Int): List<CastMemberDto> {
+        return api.getMovieCredits(movieId).cast
+    }
+
+    // 3. Filme benzer önerileri almak için getMovieRecommendations() fonksiyonu eklendi.
+    suspend fun getMovieRecommendations(movieId: Int): List<MovieDto> {
+        return api.getMovieRecommendations(movieId).results
     }
     fun getPopularMovies(): Flow<PagingData<MovieDto>> {
 
@@ -49,6 +60,6 @@ class PopularMoviesRepository @Inject constructor(
 }
 
 
-//veri internetten geliyor.
-//yani kısaca Popüler filmleri TMDB API'den alıp
-// Paging 3 kullanarak sayfa sayfa yüklenmesini sağlayan Repository sınıfıdır.
+// Popüler filmleri, film detayını, oyuncu kadrosunu ve
+// benzer film önerilerini TMDB API'den alıp uygulamanın
+// geri kalanına sunan Repository sınıfıdır.

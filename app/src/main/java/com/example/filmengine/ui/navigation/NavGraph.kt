@@ -1,21 +1,19 @@
 package com.example.filmengine.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument  //ekranda gösterilcek parametreler için
 import com.example.filmengine.ui.detail.DetailScreen
 import com.example.filmengine.ui.favorite.FavoriteScreen
 import com.example.filmengine.ui.popular.PopularScreen
-import androidx.navigation.NavHostController
 
 @Composable
 fun NavGraph(
     navController: NavHostController
 ) {
-
 
     // Uygulamadaki ekranlar burada tanımlanır.
     // İlk açılan ekran Popüler Filmler ekranıdır.
@@ -60,6 +58,7 @@ fun NavGraph(
         ) { backStackEntry ->
 
             // Gönderilen film id bilgisi alınır.
+
             val movieId = backStackEntry.arguments?.getInt("movieId") ?: -1
 
             DetailScreen(
@@ -70,15 +69,22 @@ fun NavGraph(
                         // Popular ekranını stack'ten tamamen çıkarıp yeniden ekliyoruz,
                         // böylece Favorite'ten gelinmiş olsa bile geri tuşu
                         // Favorite'e değil Popular'a gider
+
                         popUpTo(Screen.Popular.route) { inclusive = true }
                         launchSingleTop = true
                     }
+                },
+                // Benzer filmler bölümünden bir filme tıklanınca
+                // yeni bir Detail ekranı üstüne eklenir (normal push davranışı).
+
+                onMovieClick = { newMovieId ->
+                    navController.navigate(Screen.Detail.createRoute(newMovieId))
                 }
             )
         }
     }
 }
 
-// Bu dosya uygulamadaki tüm ekran geçişlerini (Popular, Favorite, Detail)
-// NavController artık MainScreen'den geldiği için
-// tüm ekranlar aynı navigation yapısını kullanır.
+// Bu dosya uygulamadaki tüm ekran geçişlerini (Popular, Favorite, Detail) yönetir.
+// NavController artık MainScreen'den geldiği için tüm ekranlar
+// (hem NavGraph hem de alt navigasyon barı) aynı geçmişi (back stack) paylaşır.
