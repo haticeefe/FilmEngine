@@ -159,6 +159,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     // Compose içinde internetten resim göstermek için kullanılır.
     implementation(libs.coil.compose)
+    implementation("androidx.compose.material:material-icons-extended:1.6.7")
 
 
     implementation(libs.androidx.hilt.navigation.compose)

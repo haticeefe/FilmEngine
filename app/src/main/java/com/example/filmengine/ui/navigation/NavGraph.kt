@@ -9,13 +9,13 @@ import androidx.navigation.navArgument  //ekranda gösterilcek parametreler içi
 import com.example.filmengine.ui.detail.DetailScreen
 import com.example.filmengine.ui.favorite.FavoriteScreen
 import com.example.filmengine.ui.popular.PopularScreen
-
+import androidx.navigation.NavHostController
 
 @Composable
-fun NavGraph() {
+fun NavGraph(
+    navController: NavHostController
+) {
 
-    // Ekranlar arasındaki geçişleri yöneten NavController oluşturulur.
-    val navController = rememberNavController()
 
     // Uygulamadaki ekranlar burada tanımlanır.
     // İlk açılan ekran Popüler Filmler ekranıdır.
@@ -62,7 +62,23 @@ fun NavGraph() {
             // Gönderilen film id bilgisi alınır.
             val movieId = backStackEntry.arguments?.getInt("movieId") ?: -1
 
-            DetailScreen(movieId = movieId)
+            DetailScreen(
+                movieId = movieId,
+                // Geri tuşuna basılınca çalışacak fonksiyon: her zaman Popular'a döner
+                onBackToPopular = {
+                    navController.navigate(Screen.Popular.route) {
+                        // Popular ekranını stack'ten tamamen çıkarıp yeniden ekliyoruz,
+                        // böylece Favorite'ten gelinmiş olsa bile geri tuşu
+                        // Favorite'e değil Popular'a gider
+                        popUpTo(Screen.Popular.route) { inclusive = true }
+                        launchSingleTop = true
+                    }
+                }
+            )
         }
     }
 }
+
+// Bu dosya uygulamadaki tüm ekran geçişlerini (Popular, Favorite, Detail)
+// NavController artık MainScreen'den geldiği için
+// tüm ekranlar aynı navigation yapısını kullanır.
